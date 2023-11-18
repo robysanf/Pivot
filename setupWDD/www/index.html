@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+       <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline';
+			script-src 'self' http://192.168.1.90:8080 'unsafe-inline' 'unsafe-eval'; connect-src ws://192.168.1.90:8080 wss://192.168.1.90:8080 ">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <meta name="color-scheme" content="light dark">
+        <link rel="stylesheet" href="css/index.css">
+		<link rel="stylesheet" href="css/wdd.css">
+        <title>WDD SETUP</title>
+    </head>
+
+		<script src="cordova.js"></script>    
+        <script src="js/index.js"></script>
+		 <script src="js/socket.js"></script>
+		 <script src="js/slide.js"></script>	
+		
+    <body onload="showSlides(slideIndex)">
+	
+	 <div id="message" class="connection" style="height:20px;">&nbsp;</div>
+	
+      <div id ="appwdd" class="app">
+		    <h1>W D D</h1>
+			 <div id="connection" class="connection" style="height:40px;"><h1>Apache</h1></div>
+			  <div id="deviceready" class="blink">
+                <p class="event listening">Connecting to Device</p>
+                <p class="event received">Device is Ready</p>
+            </div>
+	 <div style="width:90%; height:100%; margin-left:10%;">
+      <p style="font-size:1.5vw;">RESPONSE</p>
+      <textarea name="websocket" id="websocket" class="websocket" rows="10" cols="30" style="width:90%;" readonly></textarea>
+	  <button value="go" onclick="javascript:send();">invia</button>
+	  <button value="go" onclick="javascript:send('apri');">APRI</button>
+	  <button value="go" onclick="javascript:send('chiu');">CHIUDI</button>
+	  <button value="go" onclick="javascript:send('stop');">STOP</button>
+	  <div id="txt_com" class="connection" style="height:20px;"></div>
+	</div>  
+        </div>
+       </div>
+<div id= "slideshow" class="slideshow-container">
+
+<div id="page1" class="mySlides">
+  <div class="numbertext">1 / 8</div>
+  <br><br><br>
+  <!--img src="img_nature_wide.jpg" style="width:100%"-->
+  <div class="NAV"><button onclick="inizia()">INIZIA</button></div>
+  <div class="text">NON E STATA TROVATA UNA CONFIGURAZIONE PRECEDENTE<BR>E' NECESSARIO CONFIGURARE LA PORTA PER LA PRIMA VOLTA<BR>
+					CHIUDERE A MANO LENTAMENTE LA PORTA.<BR> QUANDO CHIUSA PREMERE IL PULSANTE "INIZIA" QUI SOTTO
+  </div>
+</div>
+<div id="page2" class="mySlides">
+  <div class="numbertext">2 / 8</div>
+  <br><br><br>
+  <!--img src="img_nature_wide.jpg" style="width:100%"-->
+  <div class="NAV"><button onclick="calcola_encoder()">FATTO</button></div>
+  <div class="text">MUOVERE LA PORTA NEL SENSO DI APERTURA<BR>A PORTA FERMA PREMERE IL PULSANTE "FATTO" QUI SOTTO</div>
+</div>
+
+<div id="page3" class="mySlides">
+  <div class="numbertext">3 / 8</div>
+  <!--img src="img_mountains_wide.jpg" style="width:100%"-->
+  <div class="text">APRIRE A MANO LENTAMENTE LA PORTA.<br> QUANDO LA PORTA E' COMPLETAMENTE APERTA PREMERE IL PULSANTE "FATTO" QUI SOTTO</div>
+  <div class="NAV"><button onclick="imposta_pos_aperto()">FATTO</button></div>
+</div>
+
+<div id="page4" class="mySlides">
+  <div class="numbertext">4 / 8</div>
+  <!--img src="img_mountains_wide.jpg" style="width:100%"-->
+  <div class="text">PORTARE A MANO LENTAMENTE LA PORTA A META' APERTURA.<br> QUANDO LA PORTA E' FERMA A META' APERTURA<BR>
+  MISURARE CON UN METRO IL RAGGIO DAL PERNO ALL'ESTREMO DELLA PORTA <BR>INSERIRE IL VALORE IN MILLIMETRI (mm) NEL CAMPO SOTTOSTANTE<BR>
+  POI PREMERE IL PULSANTE "FATTO" </div>
+ <div class="RAGGIO">  <label for="fraggio">Raggio (mm):</label>
+  <input type="text" id="fraggio" name="fraggio"></div><br><br>
+  <div class="NAV"><button onclick="calcola_imp()">FATTO</button></div>
+</div>
+
+<div id="page5" class="mySlides">
+  <div class="numbertext">5 / 8</div>
+  <!--img src="img_mountains_wide.jpg" style="width:100%"-->
+  <div class="text">PORTARE A MANO LENTAMENTE LA PORTA A META' APERTURA.<br> PREMERE IL PULSANTE "MOVE" QUI SOTTO<BR>
+  SE LA PORTA SI APRE PREMERE APRE , SE SI CHIUDE PREMERE CHIUDE<BR></div>
+   <div class="NAV"><button onclick="move()">MOVE</button></div>
+   <div class="APRE"><button onclick="apre()">APRE</button></div>
+  <div class="CHIUDE"><button onclick="chiude()">CHIUDE</button></div>
+</div>
+
+<div id="page6" class="mySlides">
+  <div class="numbertext">6 / 8</div>
+   <div class="text">PREMERE IL PULSANTE "AVVIA" QUI SOTTO<BR>
+  LA PORTA FARA' UN CICLO COMPLETO DI APERTURA E CHIUSURA <BR>
+  NON OSTACOLARE IL MOVIMENTO E RIMUOVERE EVENTUALI OSTACOLI<BR></div>
+   <div class="NAV"><button onclick="cons()">AVVIA</button></div>
+   
+</div>
+<div id="page7" class="mySlides">
+  <div class="numbertext">7 / 8</div>
+   <div class="text">PREMERE IL PULSANTE "AVVIA" QUI SOTTO<BR>
+  LA PORTA FARA' PIU' CICLI COMPLETO DI APERTURA E CHIUSURA.<BR>
+  NON OSTACOLARE IL MOVIMENTO E RIMUOVERE EVENTUALI OSTACOLI<BR></div>
+   <div class="NAV"><button onclick="plusSlides(1)">AVVIA</button></div>
+   
+</div>
+
+<div id="page8" class="mySlides">
+  <div class="numbertext">8 / 8</div>
+   <div class="text">CONFIGURAZIONE TERMINATA </div>
+   <div class="NAV"><button onclick="set()">SETUP</button></div>
+   
+</div>
+
+
+
+<a class="prev" onclick="plusSlides(-1)">PREVIOUS</a>
+<a class="next" onclick="plusSlides(1)">NEXT</a>
+
+</div>
+<br>
+ <div id="setup" class="super">
+  <div class="numbertext">SetUp</div>
+   <div class="text">INSERIRE I VALORI DESIDERATI E PREMERE SALVA</div>
+   <div class="NAV_save"><button onclick="save(0)">SALVA</button></div>
+   <div class="APRE"><button onclick="apri()">APRI</button></div>
+   <div class="CHIUDE"><button onclick="chiudi()">CHIUDI</button></div>
+   
+</div>
+<div class="grid-container" id="gridContainer">
+
+
+
+	  
+		
+    </body>
+</html>
+
+
+
