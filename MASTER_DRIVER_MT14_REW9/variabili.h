@@ -1,4 +1,4 @@
-//************   WIFI e SOCKET 
+//************   WIFI e SOCKET  
 IPAddress ip(192, 168, 1, 90);
 //#define SECRET_SSID     "PIVOT1"
 //#define SECRET_PASS     "Sanfer04"
