@@ -12,20 +12,29 @@ WebsocketsClient* client = NULL;
 char ssid[] = SECRET_SSID;              // your network SSID (name)
 char pass[] = SECRET_PASS;              // your network password (use for WPA, or use as key for WEP), length must be 8+
 int status = WL_IDLE_STATUS;
+
 void setup() {
   pinMode(apri_serratura, OUTPUT);
   pinMode(CHIUDI, INPUT_PULLUP);  // VALORE DEL PIN chiudi
   pinMode(APRI, INPUT_PULLUP);  // VALORE DEL PIN apri
-  pinMode(A5, INPUT_PULLUP);  // VALORE DEL PIN stato serratura
-  pinMode(A4, OUTPUT);
-  pinMode(3, INPUT_PULLUP);
-  pinMode(2, INPUT_PULLUP);
+  pinMode(pinEnableBEA, INPUT_PULLUP);  // VALORE DEL PIN disabilita BEA
+  pinMode(pinReleMotore, OUTPUT);//controlla rele per staccare fili motore
+  pinMode(pinReleBlocca, OUTPUT);//controlla rele per bloccare motore
+  pinMode(pinZero1, INPUT_PULLUP);//pin magnete 1
+  pinMode(pinZero2, INPUT_PULLUP);//pin magnete 2
+  pinMode(pinAB,INPUT_PULLUP);// pin per capire da che lato sono
+  pinMode(3, INPUT_PULLUP);//encoder
+  pinMode(2, INPUT_PULLUP);//encoder
   pinMode(HC12, OUTPUT);//cambio canale hc
   digitalWrite(HC12, HIGH);
-  digitalWrite(A6, HIGH);digitalWrite(A7, HIGH);
+  digitalWrite(APRI, HIGH);digitalWrite(CHIUDI, HIGH);
 
   attachInterrupt(digitalPinToInterrupt(3), avanti_3, CHANGE );
   attachInterrupt(digitalPinToInterrupt(2), avanti_2, RISING);
+  
+  attachInterrupt(digitalPinToInterrupt(pinZero1), puntozero1, CHANGE );
+  attachInterrupt(digitalPinToInterrupt(pinZero2), puntozero2, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(pinAB), latoAB, CHANGE);
 
   WIFIMode();
   SocketsServer.listen(WEBSOCKETS_PORT);
@@ -39,19 +48,7 @@ void setup() {
   md.init();
   Serial.begin(9600);
   Serial1.begin(9600);
-  /* digitalWrite(4, HIGH);
-    digitalWrite(A4,HIGH);
-    md.setM2Speed(0);
-    md.setM2Speed(60 * motore * -1);
-    delay(500);
-    //pos = 0;
-    md.setM2Speed(0);
-    delay(500);
-    pos = 0;
-
-    digitalWrite(4, LOW);
-    digitalWrite(A4, LOW);
-    /*/
+  
   if (configurazione) {
     set_reset();
   }
@@ -233,28 +230,4 @@ void Controlla_Posizione() {
   }
   //Serial.print("Crocera  == "); Serial.println(Crocera);
   //Serial.print("POS  == "); Serial.println(pos);
-}
-
-void set_reset() {
-  Serial.println("Set reset ridotto");
-  digitalWrite(4, HIGH);
-  digitalWrite(A4, HIGH);
-  md.setM2Speed(0);
-  pos_vecchio = pos;
-  for (int i = 50; i < 100; i = i + 1) {
-    md.setM2Speed(i * motore * -1);
-    delay(10);
-  }
-  Serial.println("Set reset While");
-  while (pos_vecchio != pos) {
-    pos_vecchio = pos;
-    delay(1000);
-  }
-  md.setM2Speed(0);
-  md.setM2Speed(60 * motore * -1);
-  delay(500);
-  pos = 0;
-  pos_vecchio = pos;
-  digitalWrite(4, LOW);
-  digitalWrite(A4, LOW);
 }

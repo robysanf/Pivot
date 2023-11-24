@@ -4,15 +4,15 @@ void Dai_Parti(int top) {
     return;
   } Serial.println("bea aaaaaaaaaaaaaaaaaaaaaa ");
   inVia("222", 1);//******************************************************** occhio *************************************
-  digitalWrite(4, HIGH);
-  digitalWrite(A4,HIGH);
+  digitalWrite(pinDisableDriver, HIGH);
+  digitalWrite(pinReleMotore,HIGH);
   if ( pos < 100) {
     //md.setM2Speed(100 * motore * 1);
     digitalWrite(apri_serratura, HIGH);
     delay(500);
     //digitalWrite(apri_serratura, LOW);
     //delay(700);
-    // - se ho il pin  stato_serratura digitalRead(A5) == ?
+    // - se ho il pin  stato_serratura 
     int tempo_serratura = millis();
     /* while(digitalRead(A5) == HIGH || (millis() - tempo_serratura) > 2000){Serial.println("while ");
        return;

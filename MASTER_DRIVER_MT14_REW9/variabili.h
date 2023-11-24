@@ -36,6 +36,13 @@ const int apri_serratura = 5;                     // VALORE DEL PIN PER COMANDAR
 const int APRI = A6;      // fc2                    // VALORE DEL PIN PER APRI  
 const int CHIUDI = A7;    // fc1                 // VALORE DEL PIN PER CHIUDI
 const int HC12 = 11;
+const int pinZero1=A1;
+const int pinZero2=A5;
+const int pinAB=13;
+const int pinEnableBEA=A2;
+const int pinReleMotore=A4;
+const int pinReleBlocca=A3;
+const int pinDisableDriver=4;
 
 //******************** VARIBILI STATO 
 int stato_APRI = 0;                       // INDICA SE IL PIN APRI E PREMUNTO
@@ -86,6 +93,9 @@ int pos_vecchio;
 int pos_vecchio_loop;
 volatile long pos = 300;
 int abbrivio = 15; // -- mm per ferfarsi
+int puntoZero1=0;
+int puntoZero2=0;
+int latoAB=0;
 
 int top_max = 1200;
 int Velocita_Bassa = 90;  

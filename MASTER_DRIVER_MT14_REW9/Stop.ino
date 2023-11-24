@@ -15,8 +15,8 @@ void Stop(int Delay) {
     corrente[ic] = 0;
   }
   // --  V_M = 0.00; sostituito con   if( (micros() - T1) < (1/(15*imp))*1000000*(cadenza*2))  nel loop
-  digitalWrite(4, LOW);
-  digitalWrite(A4,LOW);
+  digitalWrite(pinDisableDriver, LOW);
+  digitalWrite(pinReleMotore,LOW);
   if(pos < pos_chiuso)  {
   inVia("111", 1); // ******************************************************** occhio *************************************
   }

@@ -5,7 +5,7 @@ void Controlla_Bea() {
   // --  posizione 1     TEST     1 <> 2    VIENE GESTITO A PARTE QUINDI LO ESCLUDEREI DAL PROCESSO
   // --  posizione 1     COMANDO  1 - 2 - 3  VIENE GESTITO A PARTE QUINDI LO ESCLUDEREI DAL PROCESSO
 
-if(digitalRead(A5)==LOW)
+if(digitalRead(pinEnableBEA)==LOW)
    return;
 
   int codice = String(stato_Bea).substring(0, 2).toInt();
