@@ -1,15 +1,13 @@
- 
+// -- CANALE CH12 ch010 
 int tempo_invio = 0;
 int tempo_attesa = 0;
 int cadenza = 2000;
 String modo = "0";
-int HC12=3;
+
 void setup() {
   pinMode(8, INPUT_PULLUP); // -- pin per lo stop
   pinMode(A4, INPUT);       // -- pin per il test
   pinMode(5, INPUT_PULLUP); // -- pin per il reopen
-  pinMode(HC12, OUTPUT);//cambio canale hc
-  digitalWrite(HC12, HIGH);
   Serial.begin(9600);
   Serial1.begin(9600);
 }
@@ -67,8 +65,6 @@ void loop() {
       
       }
       int f = String(myBuffer).substring(2,3).toInt();
-      String c = String(myBuffer).substring(1,3);
-      int z = String(myBuffer).substring(0,1).toInt();
       Serial.println(f);
       if ( f == 2  &&  ricezione_completata) {
         cadenza = 250;
@@ -84,11 +80,6 @@ void loop() {
         Serial1.write(list);
         Serial.println("invio f 333");
       }
-      if ( z == 5 &&  ricezione_completata){
-          cambia_canale(c);
-          Serial.print("cambio canale : ");Serial.println(c);
-      }
-      
       Serial.println(String(myBuffer));  // -- cosa ricevo dal GRANDE
       //Serial.print(" tempo fine ricezione = "); Serial.println(String(micros() - oldt));
       tempo_attesa = millis();
@@ -96,14 +87,3 @@ void loop() {
   }
   //Serial.print(" tempo loop = "); Serial.println(String(micros() - tempo_loop));
 }
-
-void cambia_canale(String ch){
-     digitalWrite(HC12, LOW);
-     delay(150);
-      String s="AT+C"+ch;
-      char lis[255];
-      s.toCharArray(lis,255);
-     Serial1.write(lis);
-     delay(150);
-     digitalWrite(HC12, HIGH);
-  }
