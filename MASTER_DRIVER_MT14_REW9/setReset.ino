@@ -6,7 +6,7 @@ void set_reset() {
   pos_vecchio = 10;
   for (int i = 50; i < 100 && pos!=0; i = i + 1) {
     
-    md.setM2Speed(i * motore * latoAB);
+    md.setM2Speed(i * motore);
     checkPuntoZero();
     delay(10);
   }

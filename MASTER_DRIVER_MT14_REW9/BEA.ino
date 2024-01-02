@@ -18,11 +18,11 @@ if(digitalRead(pinEnableBEA)==LOW)
       non_aprire = false;
       if ( Bea_stop == true ) {
         Bea_stop = false;       // -- blocco la chiusura dopo 5 secondi
-        Dai_Parti(top_max);     // -- faccio finire di aprire la porta
+  //      Dai_Parti(top_max,);     // -- faccio finire di aprire la porta
       }
       if ( Bea_reopen == true ) {
         Bea_reopen = false;       // -- blocco la chiusura dopo 5 secondi
-        Dai_Parti(top_max);     // -- faccio finire di aprire la porta
+    //    Dai_Parti(top_max);     // -- faccio finire di aprire la porta
       }
       
       break;

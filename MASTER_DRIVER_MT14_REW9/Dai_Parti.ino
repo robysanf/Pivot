@@ -1,4 +1,13 @@
-void Dai_Parti(int top) {
+void Dai_Parti(int top, int v) {
+  vers=v;
+  if (v==0 && pos > 0)
+  { 
+    vers=1;
+  } 
+  if(v==0 && pos <0)
+   { 
+    vers=-1;
+   }
   Serial.println("bea dddddddddddddddddddd ");
   if (non_aprire == true) {
     return;
@@ -6,21 +15,10 @@ void Dai_Parti(int top) {
   inVia("222", 1);//******************************************************** occhio *************************************
   digitalWrite(pinDisableDriver, HIGH);
   digitalWrite(pinReleMotore,HIGH);
-  if ( pos < 100) {
-    //md.setM2Speed(100 * motore * 1);
-    digitalWrite(apri_serratura, HIGH);
-    delay(500);
-    //digitalWrite(apri_serratura, LOW);
-    //delay(700);
-    // - se ho il pin  stato_serratura 
-    int tempo_serratura = millis();
-    /* while(digitalRead(A5) == HIGH || (millis() - tempo_serratura) > 2000){Serial.println("while ");
-       return;
-      }*/
-  }
+  
   int i = 0;
-  direzione = 1;
-  if (top < 0) {
+  direzione = 1 ;
+  if (top < 0) {////*************************************??????????????????????? verificare
     direzione = -1;
     top = top * -1;
   }
@@ -34,7 +32,7 @@ void Dai_Parti(int top) {
        return;
        }
       }*/
-    md.setM2Speed(i * motore * direzione);
+    md.setM2Speed(i * motore * direzione * vers);
     tensione = i;
     if ( Targhet(Crocera)) {
       Serial.println("raggiunto targhet ");
@@ -47,16 +45,17 @@ void Dai_Parti(int top) {
       Stop(5);
       break;
     }
-    delay(3);
+    delay(5);
     Serial.print("MD_CURRENT = "); Serial.println(md.getM2CurrentMilliamps());
     Serial.print("Tensione accelera = "); Serial.println(i);
-    if ((pos >= pos_aperto && direzione == 1) || (pos < 0 && direzione == -1)) {
+    if ((abs(pos) >= pos_aperto && direzione == 1 * vers) || (abs(pos) < pos_chiuso && direzione == -1 * vers)) {
+    Serial.print("Tension = "); Serial.println(i);
       Stop(1);
       break;
     }
   }
-  if (direzione == -1) {
+  if (direzione == -1 * vers) {
     tutto_aperto = false;
   }
-  digitalWrite(apri_serratura, LOW);
+  //digitalWrite(apri_serratura, LOW);
 }

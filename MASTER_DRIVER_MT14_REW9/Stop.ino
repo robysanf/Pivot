@@ -1,7 +1,7 @@
 void Stop(int Delay) {
   for (int i = tensione; i > 0; i = i - 1) {
     if (i < 0) i = 0;
-    md.setM2Speed(i * motore * direzione);
+    md.setM2Speed(i * motore * direzione * vers);
     delay(Delay);
   }
   //top = 0;
@@ -17,7 +17,7 @@ void Stop(int Delay) {
   // --  V_M = 0.00; sostituito con   if( (micros() - T1) < (1/(15*imp))*1000000*(cadenza*2))  nel loop
   digitalWrite(pinDisableDriver, LOW);
   digitalWrite(pinReleMotore,LOW);
-  if(pos < pos_chiuso)  {
+  if(pos < pos_chiuso* vers)  {
   inVia("111", 1); // ******************************************************** occhio *************************************
   }
 }

@@ -33,11 +33,11 @@ Serial.print(SocketsServer.available() ? " " : "Socket Server Not Running on ");
         Storage_SaveAll(strweb2);
         Storage_Load();
       }
-      if ( strweb == "apri") {
+   /*   if ( strweb == "apri") {
         Dai_Parti(top_max);
-      }
+      }*/
       if ( strweb == "chiu") {
-        Dai_Parti(-top_max);
+        Dai_Parti(-top_max,0);
       }
       if ( strweb == "stop") {
         Stop(5);
@@ -69,7 +69,7 @@ Serial.print(SocketsServer.available() ? " " : "Socket Server Not Running on ");
       }
 
       if ( strweb == "move") {
-        Dai_Parti(top_max);
+        Dai_Parti(top_max,1);
         delay(2000);
         Stop(5);
       }
@@ -95,7 +95,6 @@ Serial.print(SocketsServer.available() ? " " : "Socket Server Not Running on ");
             inVia("5"+strweb2, 0);
             delay(2000);
             cambia_canale(strweb2);
-            
          }
       }
 

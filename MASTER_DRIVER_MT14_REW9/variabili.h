@@ -1,11 +1,11 @@
-//************   WIFI e SOCKET 
+m//************   WIFI e SOCKET 
 IPAddress ip(192, 168, 1, 90);
-//#define SECRET_SSID     "PIVOT1"
-//#define SECRET_PASS     "Sanfer04"
-#define SECRET_SSID     "EOLO_181478"
-#define SECRET_PASS     "AtmRHsuLw"
+#define SECRET_SSID     "PIVOT1"
+#define SECRET_PASS     "Sanfer04"
+//#define SECRET_SSID     "EOLO_181478"
+//#define SECRET_PASS     "AtmRHsuLw"
 #define STORAGE_BUFFER 500
-int wifimode = 1;
+int wifimode = 0;
 enum nomeVar { RAGGIO, IMP, POS_APERTO, POS_CHIUSO,VELOCITA_BASSA,VELOCITA_MEDIA,VELOCITA_ALTA, MOTORE,ENCODER,CONFIGURAZIONE,POS,CADENZA,CONSUMO_BASSA_MAX,CONSUMO_MEDIA_MAX,CONSUMO_ALTA_MAX} ;
 const static struct {
     nomeVar     val;
@@ -59,6 +59,7 @@ int stato_Bea = 1111;
 boolean non_aprire = false;
 int direzione = 0;
 int in_movimento = 0;
+int vers=0;
 
 //*******************  TEMPO
 long tempo_pulsante_1 = 0 ;      // PER TEMPORIZZARE I PULSANTI
@@ -93,8 +94,8 @@ int pos_vecchio;
 int pos_vecchio_loop;
 volatile long pos = 300;
 int abbrivio = 15; // -- mm per ferfarsi
-int puntoZero1=0;
-int puntoZero2=0;
+int puntoZero=0;
+//int puntoZero2=0;
 int latoAB=0;
 
 int top_max = 1200;

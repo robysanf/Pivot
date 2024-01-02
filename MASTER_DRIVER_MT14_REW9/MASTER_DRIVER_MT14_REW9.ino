@@ -32,9 +32,9 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(3), avanti_3, CHANGE );
   attachInterrupt(digitalPinToInterrupt(2), avanti_2, RISING);
   
-  attachInterrupt(digitalPinToInterrupt(pinZero1), puntozero1, CHANGE );
+ // attachInterrupt(digitalPinToInterrupt(pinZero1), puntozero1, CHANGE );
   attachInterrupt(digitalPinToInterrupt(pinZero2), puntozero2, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(pinAB), latoAB, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(pinAB), call_latoAB, CHANGE);
 
   WIFIMode();
   SocketsServer.listen(WEBSOCKETS_PORT);
@@ -50,7 +50,7 @@ void setup() {
   Serial1.begin(9600);
   
   if (configurazione) {
-    set_reset();
+  //  set_reset();
   }
 }
 
@@ -102,12 +102,18 @@ void loop() {
       encoder = encoder * -1;
     }
 
-    // -- COMANDI NORMALI
-    if (inputString == "apri") {
+   
+    if (inputString == "esci") {
       
       Serial.println("--------------- Apri top = 500 --------------");
       //top = 500;
-      Dai_Parti(top_max);
+      Dai_Parti(top_max,1);
+    }
+    if (inputString == "entra") {
+      
+      Serial.println("--------------- Apri top = 500 --------------");
+      //top = 500;
+      Dai_Parti(top_max,-1);
     }
     if (inputString == "wifi") {
       
@@ -118,7 +124,7 @@ void loop() {
     if (inputString == "chiudi") {
       Serial.println("--------------- Chiudi top = 500 --------------");
       //top = -500;
-      Dai_Parti(-top_max);
+      Dai_Parti(-top_max,0);
     }
     if (inputString == "stop") {
       Serial.println("--------------- Stop --------------");
@@ -182,20 +188,20 @@ void loop() {
     Serial.print("tutto ap = ");Serial.println(tutto_aperto); */
   if ( millis() - conta > Chiusura_Stop && Bea_stop == true) {
     Serial.println("riparti stop= ");
-    Dai_Parti( -top_max);
+    Dai_Parti( -top_max,0);
     conta = 0;
     Bea_stop = false;
-  }
+  }/*
   if ( millis() - conta > Riattiva_Reopen && Bea_reopen == true) {
     Serial.println("riparti reop = ");
-    Dai_Parti( top_max);
+    Dai_Parti( top_max,1);
     conta = 0;
     Bea_reopen = false;
-  }
+  }*/
   //SE è TUTTO APERTO DOPO 10 SECONDI CHIUDO
   if ( millis() - conta > Chiusura_Automatica && tutto_aperto == true) {
     Serial.println("riparti tutto aperto = ");
-    Dai_Parti( -top_max);
+    Dai_Parti( -top_max,0);
     conta = 0;
   }
   //Controlla_Bea();

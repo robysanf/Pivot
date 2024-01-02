@@ -18,7 +18,7 @@ void Check_Pin(){                             // -- COSTRUISCO LA STRINGA DA SWI
         if(digitalRead(APRI)!=LOW){ return;}                                           // -- ALTRIMENTI ASPETTO 300      
         T_scemo_2 = millis();                                                          // -- > GUARDO IL TEMPO
            if ((T_scemo_2 - T_scemo_1) > 100 ){                                        // -- ANTI SCEMO, SE IL TEMPO CHE PASSA DALL'ULTIMA VOLTA CHE HO RILASCIATO UN PULSANTE  E' SUPERIORE A 500..
-            Dai_Parti(top_max);                                                 // -- APRO NORMALMENTE                                                                 
+            Dai_Parti(top_max,1);                                                 // -- APRO NORMALMENTE                                                                 
             break;
            }
          stato_APRI = 1;                                                               // -- > IMPOSTA IL PULSANTE SU NON PREMUTO
@@ -49,7 +49,7 @@ void Check_Pin(){                             // -- COSTRUISCO LA STRINGA DA SWI
           delay(50); if(digitalRead(CHIUDI)!=LOW){ return;}                             // -- ALTRIMENTI ASPETTO 300              
           T_scemo_2 = millis();                                                         // -- > GUARDO IL TEMPO
           if ((T_scemo_2 - T_scemo_1) > 100 ){                                          // -- ANTI SCEMO, SE IL TEMPO CHE PASSA DALL'ULTIMA VOLTA CHE HO RILASCIATO UN PULSANTE  E' SUPERIORE A 500..
-             Dai_Parti(-top_max);                                                  // -- > CHIUDE
+             Dai_Parti(-top_max,0);                                                  // -- > CHIUDE
              stato_CHIUDI = 1;                                                          // -- > IMPOSTA IL PULSANTE SU PREMUTO
           }
          break;
