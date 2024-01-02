@@ -1,26 +1,15 @@
-long init_sock=0;
-
 void ascolta_sock() {
-  
-long now=millis();
-if(now-init_sock<300)
-    {Serial.println("now-init");Serial.print(now-init_sock);
-      return;
-      }
-      init_sock=millis();
-     WebsocketsClient  client = SocketsServer.accept();
-  //client = new WebsocketsClient;
-Serial.print(SocketsServer.available() ? " " : "Socket Server Not Running on ");
-  if (!SocketsServer.available())
-  {
-    WiFi.disconnect();
-    WiFi.end();
-     WIFIMode();
-  }  //*client = SocketsServer.accept();
 
-    if (client.available())
+  client = new WebsocketsClient;
+
+  if (client)
+  {
+    *client = SocketsServer.accept();
+
+    if (client->available())
     {
-      WebsocketsMessage msg = client.readBlocking();
+      WebsocketsMessage msg = client->readBlocking();
+
       // log
       Serial.print("Got Message: ");
       Serial.println(msg.data());
@@ -32,10 +21,11 @@ Serial.print(SocketsServer.available() ? " " : "Socket Server Not Running on ");
         // (strweb2); salva su SD 
         Storage_SaveAll(strweb2);
         Storage_Load();
+
       }
-   /*   if ( strweb == "apri") {
-        Dai_Parti(top_max);
-      }*/
+      if ( strweb == "apri") {
+        Dai_Parti(top_max,1);
+      }
       if ( strweb == "chiu") {
         Dai_Parti(-top_max,0);
       }
@@ -84,18 +74,9 @@ Serial.print(SocketsServer.available() ? " " : "Socket Server Not Running on ");
           d = strweb2.toInt();
         }
         Calcola_Consumo(d);
-        configurazione=1;//quando fatta "velo" spostarlo dopo velo
       }
       if ( strweb == "velo") {
         //apertura e chiusura completa a varie velocita con prova di arresto da parte dell operatore per impostare attrito per modificare percentuale di aumento comsumo
-      }
-     if ( strweb == "chch") {
-      if (strweb2 != "") { 
-            Serial.println("cambia canale");
-            inVia("5"+strweb2, 0);
-            delay(2000);
-            cambia_canale(strweb2);
-         }
       }
 
       //qui devono essere passati i nomi delle variabili esatti perchè poi vengono rispediti cosi all'arduino
@@ -106,16 +87,16 @@ Serial.print(SocketsServer.available() ? " " : "Socket Server Not Running on ");
                  + "#ENCODER=" + String(encoder) + "#MOTORE=" + String(motore) + "#CONFIGURAZIONE=" + String(configurazione) + "#pos=" + String(pos) + "#CADENZA=" + String(cadenza)
                  + "#CONSUMO_BASSA_MAX=" + String(consumo_Bassa_max) + "#CONSUMO_MEDIA_MAX=" + String(consumo_Media_max) + "#CONSUMO_ALTA_MAX=" + String(consumo_Alta_max);
       Serial.print("risposta"); Serial.println(risposta);
-      client.send(risposta);
+      client->send(risposta);
       Serial.print("oooooooooooo "); Serial.println(strwebHost);
       // close the connection
-      client.close();
+      client->close();
       Storage_SaveAll(risposta);
       Storage_Load();
 
     }
-    //delete client;
-  //}
+    delete client;
+  }
 }
 /*
   void Salva_Socket(String varList) {

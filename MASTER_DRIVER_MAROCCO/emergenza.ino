@@ -1,7 +1,8 @@
 void emergenza(int direzione_sblocco) {
   Serial.println("emergenza ----- ");
-  digitalWrite(pinDisableDriver, HIGH);
-  digitalWrite(pinReleMotore,HIGH);
+  digitalWrite(A3, LOW);
+  digitalWrite(4, HIGH);
+  digitalWrite(A4, HIGH);
   int pos_terghet = pos + (150 * imp * direzione_sblocco);
   for (int i = 50; i < top_max; i = i + 1) {
     md.setM2Speed(i * motore * direzione_sblocco);
@@ -31,7 +32,7 @@ void emergenza(int direzione_sblocco) {
     }
     delay(1);
     conta_t++;
-    //Serial.println(conta_t);
+    Serial.println(conta_t);
   }
   Stop(1);
 }

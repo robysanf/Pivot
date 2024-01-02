@@ -140,7 +140,7 @@
 
 #define DEBUG_WEBSOCKETS_PORT     Serial
 // Debug Level from 0 to 4
-#define _WEBSOCKETS_LOGLEVEL_     4
+#define _WEBSOCKETS_LOGLEVEL_     1
 
 //const char* ssid = "AndroidAP"; //Enter SSID
 //const char* pass = "Sanfer04"; //Enter Password

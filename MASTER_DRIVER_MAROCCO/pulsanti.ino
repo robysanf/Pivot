@@ -1,4 +1,4 @@
-void Check_Pin(){                             // -- COSTRUISCO LA STRINGA DA SWITCIARE
+void Check_Pin(){    return;                    // -- COSTRUISCO LA STRINGA DA SWITCIARE
   //int i;
   int Pulsanti = 0;
   if (digitalRead(APRI) == LOW){Pulsanti = 2000;} else {Pulsanti = 1000;} 
@@ -49,7 +49,7 @@ void Check_Pin(){                             // -- COSTRUISCO LA STRINGA DA SWI
           delay(50); if(digitalRead(CHIUDI)!=LOW){ return;}                             // -- ALTRIMENTI ASPETTO 300              
           T_scemo_2 = millis();                                                         // -- > GUARDO IL TEMPO
           if ((T_scemo_2 - T_scemo_1) > 100 ){                                          // -- ANTI SCEMO, SE IL TEMPO CHE PASSA DALL'ULTIMA VOLTA CHE HO RILASCIATO UN PULSANTE  E' SUPERIORE A 500..
-             Dai_Parti(-top_max,0);                                                  // -- > CHIUDE
+             Dai_Parti(-top_max, 0);                                                  // -- > CHIUDE
              stato_CHIUDI = 1;                                                          // -- > IMPOSTA IL PULSANTE SU PREMUTO
           }
          break;

@@ -12,29 +12,19 @@ WebsocketsClient* client = NULL;
 char ssid[] = SECRET_SSID;              // your network SSID (name)
 char pass[] = SECRET_PASS;              // your network password (use for WPA, or use as key for WEP), length must be 8+
 int status = WL_IDLE_STATUS;
-
 void setup() {
   pinMode(apri_serratura, OUTPUT);
   pinMode(CHIUDI, INPUT_PULLUP);  // VALORE DEL PIN chiudi
-  pinMode(APRI, INPUT_PULLUP);  // VALORE DEL PIN apri
-  pinMode(pinEnableBEA, INPUT_PULLUP);  // VALORE DEL PIN disabilita BEA
-  pinMode(pinReleMotore, OUTPUT);//controlla rele per staccare fili motore
-  pinMode(pinReleBlocca, OUTPUT);//controlla rele per bloccare motore
-  pinMode(pinZero1, INPUT_PULLUP);//pin magnete 1
-  pinMode(pinZero2, INPUT_PULLUP);//pin magnete 2
-  pinMode(pinAB,INPUT_PULLUP);// pin per capire da che lato sono
-  pinMode(3, INPUT_PULLUP);//encoder
-  pinMode(2, INPUT_PULLUP);//encoder
-  pinMode(HC12, OUTPUT);//cambio canale hc
-  digitalWrite(HC12, HIGH);
-  digitalWrite(APRI, HIGH);digitalWrite(CHIUDI, HIGH);
-
+  //pinMode(APRI, INPUT_PULLUP);  // VALORE DEL PIN apri
+ // pinMode(A5, INPUT_PULLUP);  // VALORE DEL PIN stato serratura
+  pinMode(A4, OUTPUT);  // relè taglia fili
+  pinMode(A3, OUTPUT);  // RELE CORTO CIRCUITO
+  pinMode(3, INPUT_PULLUP);
+  pinMode(2, INPUT_PULLUP);
+  pinMode(A7, INPUT_PULLUP);//pin magnete 1
   attachInterrupt(digitalPinToInterrupt(3), avanti_3, CHANGE );
   attachInterrupt(digitalPinToInterrupt(2), avanti_2, RISING);
-  
- // attachInterrupt(digitalPinToInterrupt(pinZero1), puntozero1, CHANGE );
-  attachInterrupt(digitalPinToInterrupt(pinZero2), puntozero2, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(pinAB), call_latoAB, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(A7), puntozero, FALLING);
 
   WIFIMode();
   SocketsServer.listen(WEBSOCKETS_PORT);
@@ -44,18 +34,25 @@ void setup() {
   Serial.println(WiFi.localIP());
   Serial.print(", Port: ");
   Serial.println(WEBSOCKETS_PORT);    // Websockets Server Port
-  Storage_Load();
+
   md.init();
   Serial.begin(9600);
   Serial1.begin(9600);
-  
-  if (configurazione) {
-  //  set_reset();
-  }
+  digitalWrite(A3,LOW);
+  digitalWrite(4, HIGH);
+  digitalWrite(A4, HIGH);
+  md.setM2Speed(0);
+  md.setM2Speed(100 * motore * -1);
+  delay(500);
+  pos = 0;
+  md.setM2Speed(0);
+  //Storage_Load();
+  digitalWrite(4, LOW);
+  digitalWrite(A4, LOW);
 }
 
 void loop() {
- 
+  
   ascolta_sock() ;
   // -- verifico che non ci sia un comando da ripetere
   if ( ripeti_comando ) {
@@ -74,7 +71,7 @@ void loop() {
   }
   // -- leggo lo stato dal BEA
   delay(10);
-  ricevi(7);
+  // ricevi(7);
   // -- controllo che almeno ogni 6 secondi il Bea manda un segnale
   /*  if ((millis() - tempo_cane) > 6000 || String(stato_Bea).substring(2, 3).toInt()  == 0 ) {
       Serial.println(" NOoo-----224477******************* ");
@@ -92,46 +89,33 @@ void loop() {
       Serial.println("--------------- Calcola_Consumo --------------");
       Calcola_Consumo(100);
     }
-    if (inputString.startsWith("Cambia_Canale")) {
-      Serial.print("--------------- Cambia Canale --------------");
-      Serial.println(inputString.substring(13));
-      cambia_canale(inputString.substring(13));
-    }
     if (inputString == "simula_ENCODER") {
       Serial.println("--------------- simula_ENCODER --------------");
       encoder = encoder * -1;
     }
 
-   
+    // -- COMANDI NORMALI
     if (inputString == "esci") {
-      
-      Serial.println("--------------- Apri top = 500 --------------");
+      Serial.println("--------------- esci top = 500 --------------");
       //top = 500;
       Dai_Parti(top_max,1);
     }
     if (inputString == "entra") {
-      
-      Serial.println("--------------- Apri top = 500 --------------");
+      Serial.println("--------------- entra top = 500 --------------");
       //top = 500;
       Dai_Parti(top_max,-1);
     }
-    if (inputString == "wifi") {
-      
-      Serial.println("--------------- WI FI RESET--------------");
-     WiFi.end();
-     WIFIMode();
-    }
     if (inputString == "chiudi") {
-      Serial.println("--------------- Chiudi top = 500 --------------");
+      Serial.println("--------------- chiudi top = 500 --------------");
       //top = -500;
       Dai_Parti(-top_max,0);
     }
     if (inputString == "stop") {
-      Serial.println("--------------- Stop --------------");
+      Serial.println("--------------- stop --------------");
       Stop(5);
     }
     if (inputString == "var") {
-      Serial.println("--------------- Var --------------");
+      Serial.println("--------------- var --------------");
       Storage_Read();
     }
     inputString = "";
@@ -140,26 +124,26 @@ void loop() {
 
   // -- FERMO AI FINECORSA ****
 
-  if (pos >= pos_aperto && direzione == 1 ) {
+  if (abs(pos) >= pos_aperto && direzione == 1 ) {
     Serial.println("STOP POS");
     Stop(5);
     tutto_aperto = true;
     conta = millis();
   }
-  if (pos < (abbrivio * imp) && direzione == -1) {
+  if (abs(pos) < (abbrivio * imp) && direzione == -1) {
     Serial.println("STOP POS");
-    Stop(5);
+    Stop(15);
   }
   // -- DURAMTE IL MOVIMENTO CONTROLLO LA POSIZIONE, LA VELOCITA' ****
   if ( direzione != 0 ) {
-    Serial.print("tempo_loop = "); Serial.println(String(micros() - tempo_loop));
+    // -- *********** Serial.print("tempo_loop = "); Serial.println(String(micros()-tempo_loop));
     tempo_loop = micros();
     Controlla_Posizione();
     Mantieni_Targhet(Crocera);
     int consumo = fai_Media();
     if ( consumo > consumo_max_crocera) { // -- BISOGNA FARE CONSUMO IN BASE ALLA VELOCITA'
       int direzione_sblocco = direzione * -1;
-      Serial.print("superato consumo-------------------------"); Serial.println(consumo);
+      Serial.println("superato consumo-------------------------");
       Stop(1);
       emergenza(direzione_sblocco);
     }
@@ -191,20 +175,20 @@ void loop() {
     Dai_Parti( -top_max,0);
     conta = 0;
     Bea_stop = false;
-  }/*
+  }
   if ( millis() - conta > Riattiva_Reopen && Bea_reopen == true) {
     Serial.println("riparti reop = ");
     Dai_Parti( top_max,1);
     conta = 0;
     Bea_reopen = false;
-  }*/
+  }
   //SE è TUTTO APERTO DOPO 10 SECONDI CHIUDO
   if ( millis() - conta > Chiusura_Automatica && tutto_aperto == true) {
     Serial.println("riparti tutto aperto = ");
     Dai_Parti( -top_max,0);
     conta = 0;
   }
-  //Controlla_Bea();
+  // Controlla_Bea();
 }
 
 void serialEvent() {
@@ -219,20 +203,21 @@ void serialEvent() {
 }
 
 void Controlla_Posizione() {
-  if ((pos > pos_3 && direzione == -1) || (pos < pos_4 && direzione == 1) ) { // VELOCITA MASSIMA
+  Serial.print("entro Crocera = "); Serial.println(Crocera);
+  if (((abs(pos) > pos_3 && direzione == -1) || (abs(pos) < pos_4 && direzione == 1)) && Crocera != Velocita_Alta ) { // VELOCITA MASSIMA
     Crocera = Velocita_Alta;
-    consumo_max_crocera = consumo_Alta_max * 1.1;
-    Serial.print("cambio Crocera ALTA= "); Serial.println(Crocera);
+    consumo_max_crocera = consumo_Alta_max*1.1;
+    Serial.print("cambio Crocera = "); Serial.println(Crocera);
   }
-  if (/*(pos < pos_2 && direzione == -1) ||*/ (pos > pos_5 && direzione == 1) ) { // RALLENTAMENTO 1
+  if (((abs(pos) < pos_2 && direzione == -1) || (abs(pos) > pos_5 && direzione == 1)) &&  (Crocera > Velocita_Media || Crocera == 0)) { // RALLENTAMENTO 1
     Crocera = Velocita_Media;
-    consumo_max_crocera = consumo_Media_max * 1.15;
-    Serial.print("cambio Crocera MEDIA = "); Serial.println(Crocera);
+    consumo_max_crocera = consumo_Media_max*1.15;
+    Serial.print("cambio Crocera = "); Serial.println(Crocera);
   }
-  if (/*(pos < pos_1 && direzione == -1) ||*/ (pos > pos_6 && direzione == 1) ) { // RALLENTAMENTO 2
+  if (((abs(pos) < pos_1 && direzione == -1) || (abs(pos) > pos_6 && direzione == 1)) && (Crocera > Velocita_Bassa || Crocera == 0)) { // RALLENTAMENTO 2
     Crocera = Velocita_Bassa;
-    consumo_max_crocera = consumo_Bassa_max * 1.2;
-    Serial.print("cambio Crocera BASSA= "); Serial.println(Crocera);
+    consumo_max_crocera = consumo_Bassa_max*1.2;
+    Serial.print("cambio Crocera = "); Serial.println(Crocera);
   }
   //Serial.print("Crocera  == "); Serial.println(Crocera);
   //Serial.print("POS  == "); Serial.println(pos);

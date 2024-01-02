@@ -5,12 +5,12 @@ void Controlla_Bea() {
   // --  posizione 1     TEST     1 <> 2    VIENE GESTITO A PARTE QUINDI LO ESCLUDEREI DAL PROCESSO
   // --  posizione 1     COMANDO  1 - 2 - 3  VIENE GESTITO A PARTE QUINDI LO ESCLUDEREI DAL PROCESSO
 
-if(digitalRead(pinEnableBEA)==LOW)
-   return;
+  if (digitalRead(A5) == LOW)
+    return;
 
   int codice = String(stato_Bea).substring(0, 2).toInt();
   //Serial.print("controlla Bea = "); Serial.println(codice);
-  
+
   switch (codice) {
     case 11: // -- tutto funziona correttamente
       // -- nessuna azione
@@ -18,13 +18,13 @@ if(digitalRead(pinEnableBEA)==LOW)
       non_aprire = false;
       if ( Bea_stop == true ) {
         Bea_stop = false;       // -- blocco la chiusura dopo 5 secondi
-  //      Dai_Parti(top_max,);     // -- faccio finire di aprire la porta
+        Dai_Parti(top_max, 1);    // -- faccio finire di aprire la porta
       }
       if ( Bea_reopen == true ) {
         Bea_reopen = false;       // -- blocco la chiusura dopo 5 secondi
-    //    Dai_Parti(top_max);     // -- faccio finire di aprire la porta
+        Dai_Parti(top_max, 1);    // -- faccio finire di aprire la porta
       }
-      
+
       break;
     case 21: // -- si è attivato lo stop in apertura
       // -- possibili varianti a seconda della direzione delle porta
@@ -32,17 +32,17 @@ if(digitalRead(pinEnableBEA)==LOW)
         Stop(5);                           // -- si ferma
         conta = millis();                  // -- time out chiude
         Bea_stop = true;
-        Bea_reopen = false;  
+        Bea_reopen = false;
       }
-    
+
       break;
     case 22: // -- si è attivato il reopen ed anche lo stop
       // -- pensiamoci...
       // -- possibili varianti a seconda della direzione delle porta
-      if ( direzione == 0 ){
+      if ( direzione == 0 ) {
         non_aprire = true;
       }
-      
+
       Stop(5);
       // -- risolto apre
       // -- time out chiude

@@ -49,14 +49,3 @@ void  ricevi(int chi) {
     }
   }
 }
-
-void cambia_canale(String ch){
-     digitalWrite(HC12, LOW);
-     delay(150);
-      String s="AT+C"+ch;
-      char lis[255];
-      s.toCharArray(lis,255);
-     Serial1.write(lis);
-     delay(150);
-     digitalWrite(HC12, HIGH);
-  }

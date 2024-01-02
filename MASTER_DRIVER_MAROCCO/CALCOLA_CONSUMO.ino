@@ -7,8 +7,9 @@ void Calcola_Consumo(int targhet)  {
   int assorbimento_2 = 0;
   boolean fatto = false;
   boolean fatto2 = false;
-  digitalWrite(pinDisableDriver, HIGH);
-  digitalWrite(pinReleMotore,HIGH);
+  digitalWrite(A3, LOW);
+  digitalWrite(4, HIGH);
+  digitalWrite(A4, HIGH);
   for (i = 50; i < top_max; i = i + 1) {
     /*if ( i%5 ==0 ){
        ricevi(7);
@@ -58,9 +59,9 @@ void Calcola_Consumo(int targhet)  {
     if (targhet > 0 && targhet <= 3){
       u = targhet; 
     }
-
-      digitalWrite(pinDisableDriver, HIGH);
-      digitalWrite(pinReleMotore, HIGH);
+      digitalWrite(A3, LOW);
+      digitalWrite(4, HIGH);
+      digitalWrite(A4, HIGH);
     assorbimento_1 = 0;
     assorbimento_max = 0;
     direzione = 1;
@@ -129,8 +130,9 @@ void Calcola_Consumo(int targhet)  {
     //verso = -1;   // -- chiudo avel bassa
     assorbimento_2 = 0;
     direzione = -1;
-    digitalWrite(pinDisableDriver, HIGH);
-    digitalWrite(pinReleMotore, HIGH);
+    digitalWrite(A3, LOW);
+    digitalWrite(4, HIGH);
+    digitalWrite(A4, HIGH);
     for (i = 50; i < top_max; i = i + 1) {
       md.setM2Speed(i * motore * direzione);
       tensione = i;
@@ -193,13 +195,13 @@ void Calcola_Consumo(int targhet)  {
       }
       if (u == 2) {
         consumo_Media = (assorbimento_2 + assorbimento_1) / 2 * 120 / 100;
-        consumo_Media_max = assorbimento_max * 115 / 100;
+        consumo_Media_max = assorbimento_max * 120 / 100;
         Serial.print("consumo_Media = "); Serial.println(consumo_Media);
         Serial.print("consumo_Media_max = "); Serial.println(consumo_Media_max);
       }
       if (u == 3) {
         consumo_Alta = (assorbimento_2 + assorbimento_1) / 2 * 120 / 100;
-        consumo_Alta_max = assorbimento_max * 110 / 100;
+        consumo_Alta_max = assorbimento_max * 120 / 100;
         Serial.print("consumo_Alta = "); Serial.println(consumo_Alta);
         Serial.print("consumo_Alta_max = "); Serial.println(consumo_Alta_max);
       }
@@ -210,6 +212,6 @@ void Calcola_Consumo(int targhet)  {
     }
   }
   Serial.println("fine = Calola Consumo ");
-  digitalWrite(pinDisableDriver, LOW);
-  digitalWrite(pinReleMotore, LOW);
+  digitalWrite(4, LOW);
+  digitalWrite(A4, LOW);
 }
