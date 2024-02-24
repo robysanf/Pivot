@@ -7,9 +7,10 @@ void Calcola_Consumo(int targhet)  {
   int assorbimento_2 = 0;
   boolean fatto = false;
   boolean fatto2 = false;
-  digitalWrite(A3, LOW);
+  //digitalWrite(A3, LOW);
+  digitalWrite(6, LOW);
   digitalWrite(4, HIGH);
-  digitalWrite(A4, HIGH);
+  digitalWrite(5, HIGH);
   for (i = 50; i < top_max; i = i + 1) {
     /*if ( i%5 ==0 ){
        ricevi(7);
@@ -18,7 +19,7 @@ void Calcola_Consumo(int targhet)  {
       return;
       }
       }*/
-    md.setM1Speed(i * motore * direzione);
+    md.setM2Speed(i * motore * direzione);
     tensione = i;
     if ( Targhet(Velocita_Bassa)) {
       Serial.println("raggiunto targhet ");
@@ -59,14 +60,15 @@ void Calcola_Consumo(int targhet)  {
     if (targhet > 0 && targhet <= 3){
       u = targhet; 
     }
-      digitalWrite(A3, LOW);
+      //digitalWrite(A3, LOW);
+      digitalWrite(6, LOW);
       digitalWrite(4, HIGH);
-      digitalWrite(A4, HIGH);
+      digitalWrite(5, HIGH);
     assorbimento_1 = 0;
     assorbimento_max = 0;
     direzione = 1;
     for (i = 50; i < top_max; i = i + 1) {
-      md.setM1Speed(i * motore * direzione);
+      md.setM2Speed(i * motore * direzione);
       tensione = i;
       if ( Targhet(vel[u])) {
         Serial.println("raggiunto targhet 2 ");
@@ -130,11 +132,12 @@ void Calcola_Consumo(int targhet)  {
     //verso = -1;   // -- chiudo avel bassa
     assorbimento_2 = 0;
     direzione = -1;
-    digitalWrite(A3, LOW);
+    //digitalWrite(A3, LOW);
+    digitalWrite(6, LOW);
     digitalWrite(4, HIGH);
-    digitalWrite(A4, HIGH);
+    digitalWrite(5, HIGH);
     for (i = 50; i < top_max; i = i + 1) {
-      md.setM1Speed(i * motore * direzione);
+      md.setM2Speed(i * motore * direzione);
       tensione = i;
       if ( Targhet(vel[u])) {
         Serial.println("raggiunto targhet 3");
@@ -213,5 +216,5 @@ void Calcola_Consumo(int targhet)  {
   }
   Serial.println("fine = Calola Consumo ");
   digitalWrite(4, LOW);
-  digitalWrite(A4, LOW);
+  digitalWrite(5, LOW);
 }

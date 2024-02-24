@@ -2,8 +2,8 @@
 IPAddress ip(192, 168, 1, 90);
 //#define SECRET_SSID     "VodafoneSANFER"
 //#define SECRET_PASS     "hsanfer04@hsanfer04"
-#define SECRET_SSID     "EOLO_181478"
-#define SECRET_PASS     "AtmRHsuLw"
+#define SECRET_SSID     "PIVOT_SX"
+#define SECRET_PASS     "Pivot@PivotSX"
 #define STORAGE_BUFFER 500
 int wifimode = 0;
 enum nomeVar { RAGGIO, IMP, POS_APERTO, POS_CHIUSO, VELOCITA_BASSA, VELOCITA_MEDIA, VELOCITA_ALTA, MOTORE, ENCODER, CONFIGURAZIONE, POS, CADENZA, CONSUMO_BASSA_MAX, CONSUMO_MEDIA_MAX, CONSUMO_ALTA_MAX} ;
@@ -34,7 +34,7 @@ const static struct {
 const int apri_serratura = 5;                     // VALORE DEL PIN PER COMANDARE IL DROP-BOLT
 //const int STOP = 6;                       // VALORE DEL PIN PER STOP
 const int APRI = A6;      // fc2                    // VALORE DEL PIN PER APRI
-const int CHIUDI = A7;    // fc1                 // VALORE DEL PIN PER CHIUDI
+//const int CHIUDI = A7;    // fc1                 // VALORE DEL PIN PER CHIUDI
 
 //******************** VARIBILI STATO
 int stato_APRI = 0;                       // INDICA SE IL PIN APRI E PREMUNTO
@@ -48,6 +48,7 @@ boolean ripeti_comando = false;
 boolean Bea_stop = false;
 boolean Bea_reopen = false;
 int stato_Bea = 1111;
+boolean Disattiva_Bea = true;
 boolean non_aprire = false;
 int direzione = 0;
 int in_movimento = 0;
@@ -69,27 +70,27 @@ int tempo_mantieni_targhet = 0;
 
 //*******************  TYMER
 int Riattiva_Reopen = 500;
-int Chiusura_Stop = 5000;
-int Chiusura_Automatica = 10000;
+int Chiusura_Stop = 3000;
+int Chiusura_Automatica = 5000;
 
 //*******************  VARIBILI POSIZIONE/VELOCITA
-int pos_aperto = 82500;
+int pos_aperto = 70000;
 int pos_chiuso = 100;
 int pos_1 = (pos_aperto * 15) / 100;
-int pos_2 = (pos_aperto * 22) / 100;
-int pos_3 = (pos_aperto * 30) / 100;
-int pos_4 = (pos_aperto * 70) / 100;
-int pos_5 = (pos_aperto * 78) / 100;
+int pos_2 = (pos_aperto * 27) / 100;
+int pos_3 = (pos_aperto * 35) / 100;
+int pos_4 = (pos_aperto * 65) / 100;
+int pos_5 = (pos_aperto * 73) / 100;
 int pos_6 = (pos_aperto * 85) / 100;
 int pos_vecchio;
 int pos_vecchio_loop;
-volatile long pos = 300;
-int abbrivio = 15; // -- mm per fermarsi
+volatile long pos = 0;
+int abbrivio = 20; // -- mm per fermarsi
 
 int top_max = 1200;
-int Velocita_Bassa = 50;
+int Velocita_Bassa = 60;
 int Velocita_Media = 80;
-int Velocita_Alta = 12S0;
+int Velocita_Alta = 140;
 int consumo_max = 1200;
 int Crocera = 0;
 
@@ -97,8 +98,8 @@ int consumo_Bassa = 300;
 int consumo_Media = 600;
 int consumo_Alta = 900;
 int consumo_max_crocera = 0;
-int consumo_Bassa_max = 400;
-int consumo_Media_max = 750;
+int consumo_Bassa_max = 600;
+int consumo_Media_max = 850;
 int consumo_Alta_max = 1200;
 
 //*************** STRUTTURA
@@ -120,6 +121,8 @@ volatile int Time = 120000;
 volatile long T1 = 0;
 volatile long T3 = 0;
 volatile int t_delta = 0;
+volatile boolean Entra = false;
+volatile boolean Esci = false;
 
 //***************** CONTATORI STRING
 int ripeti_comando_conteggio = 0;
@@ -130,4 +133,7 @@ long conta = 0;
 int _Senso = 0;
 int tempo_controlla_velocita = 0;
 volatile boolean Blocco_Anta = false;
-int inerzia = 5;
+int inerzia = 3;
+int freno = 1;
+
+boolean fuoco = false;

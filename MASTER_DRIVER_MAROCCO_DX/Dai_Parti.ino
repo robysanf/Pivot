@@ -4,9 +4,10 @@ void Dai_Parti(int top, int senso) {// se voglio aprire in fuori 1  in dentro -1
     return;
   } Serial.println("bea aaaaaaaaaaaaaaaaaaaaaa ");
   //inVia("222", 1);******************************************************** occhio *************************************
-  digitalWrite(A3, LOW);
+  //digitalWrite(A3, LOW);
+  digitalWrite(6, LOW);
   digitalWrite(4, HIGH);
-  digitalWrite(A4, HIGH);
+  digitalWrite(5, HIGH);
   /*if ( abs(pos) < 100) {
     //md.setM1Speed(100 * motore * 1);
     digitalWrite(apri_serratura, HIGH);
@@ -18,12 +19,10 @@ void Dai_Parti(int top, int senso) {// se voglio aprire in fuori 1  in dentro -1
 
     }*/
   // da quiiiiiiiiiiiiiiiiii
-
   float delta = Crocera;
   int i = 0;
   direzione = 1;
   if (top < 0) {  // se volio aprire uso un top positivo
-
     direzione = -1; // direzione e top vanno insieme
     top = top * -1;
   }
@@ -35,8 +34,10 @@ void Dai_Parti(int top, int senso) {// se voglio aprire in fuori 1  in dentro -1
     }
   }
   _Senso = senso;
-
-  Controlla_Posizione();
+   Serial.println("parametri:");
+   Serial.print("  >> direzione = "); Serial.println(direzione);
+   Serial.print("  >> senso = "); Serial.println(senso);
+  Controlla_Posizione(1);
   in_movimento = 1;
   for (i = 70; i < top; i = i + 2) {
     /*  if ( i%5 ==0 ){
@@ -46,7 +47,7 @@ void Dai_Parti(int top, int senso) {// se voglio aprire in fuori 1  in dentro -1
        return;
        }
       }*/
-    md.setM1Speed(i * motore * direzione * senso);
+    md.setM2Speed(i * motore * direzione * senso);
     tensione = i;
     if ( Targhet(Crocera)) {
       Serial.println("raggiunto targhet ");
@@ -60,12 +61,12 @@ void Dai_Parti(int top, int senso) {// se voglio aprire in fuori 1  in dentro -1
       break;
     }
     if (V_M > delta * 0.5 && V_M < delta * 0.7) {
-      delay(3 * inerzia);
+      delay(1 * inerzia);
     }
     if (V_M > delta * 0.7) {
-      delay(10 * inerzia);
+      delay(4 * inerzia);
     }
-    Serial.print("MD_CURRENT = "); Serial.println(md.getM1CurrentMilliamps());
+    Serial.print("MD_CURRENT = "); Serial.println(md.getM2CurrentMilliamps());
     Serial.print("Tensione accelera = "); Serial.println(i);
     if ((abs(pos) >= pos_aperto && direzione == 1) || (abs(pos) < 0 && direzione == -1)) {
       Stop(1);
@@ -75,7 +76,7 @@ void Dai_Parti(int top, int senso) {// se voglio aprire in fuori 1  in dentro -1
   if (direzione == -1) {
     tutto_aperto = false;
   }
-  digitalWrite(apri_serratura, LOW);
+  //digitalWrite(apri_serratura, LOW);
 }
 
 //fine

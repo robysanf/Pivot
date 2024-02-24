@@ -1,8 +1,7 @@
-void Check_Pin(){    return;                    // -- COSTRUISCO LA STRINGA DA SWITCIARE
-  //int i;
+void Check_Pin(){    //return;                    // -- COSTRUISCO LA STRINGA DA SWITCIARE
   int Pulsanti = 0;
   if (digitalRead(APRI) == LOW){Pulsanti = 2000;} else {Pulsanti = 1000;} 
-  if (digitalRead(CHIUDI) == LOW){Pulsanti += 20;} else {Pulsanti += 10;}
+  Pulsanti += 10;// -- if ( (digitalRead(CHIUDI) == LOW){Pulsanti += 20;} else {Pulsanti += 10;}
   if (stato_APRI == 1){ Pulsanti += 100;} 
   if (stato_CHIUDI == 1){Pulsanti += 1;} 
   if (Pulsanti == _Pulsanti){return;}
@@ -46,7 +45,7 @@ void Check_Pin(){    return;                    // -- COSTRUISCO LA STRINGA DA S
       case 1020 :            // -- APPENA PREMUTO CHIUDI
           if (direzione != 0 ){Stop(5);  stato_CHIUDI = 1; return; } // -- SE SONO IN MOVIMENTO > FERMO
           if(pos < pos_chiuso)  {stato_CHIUDI = 1;return;}  
-          delay(50); if(digitalRead(CHIUDI)!=LOW){ return;}                             // -- ALTRIMENTI ASPETTO 300              
+          //delay(50); if(digitalRead(CHIUDI)!=LOW){ return;}                             // -- ALTRIMENTI ASPETTO 300              
           T_scemo_2 = millis();                                                         // -- > GUARDO IL TEMPO
           if ((T_scemo_2 - T_scemo_1) > 100 ){                                          // -- ANTI SCEMO, SE IL TEMPO CHE PASSA DALL'ULTIMA VOLTA CHE HO RILASCIATO UN PULSANTE  E' SUPERIORE A 500..
              Dai_Parti(-top_max, 0);                                                  // -- > CHIUDE

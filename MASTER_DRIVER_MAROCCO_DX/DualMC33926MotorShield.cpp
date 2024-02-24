@@ -215,7 +215,7 @@ unsigned int DualMC33926MotorShield::getM2CurrentMilliamps()
   //return analogRead(_M2FB) * 9;
    analogReadResolution(12);
   // Serial.print(" curr = ");Serial.println(_M2FB);
-  return analogRead(_M2FB)*2.5;
+  return analogRead(_M2FB)*3;
 }
 
 // Return motor 1 current value in milliamps.
@@ -225,7 +225,7 @@ unsigned int DualMC33926MotorShield::getM1CurrentMilliamps()
   //return analogRead(_M2FB) * 9;
    analogReadResolution(12);
   // Serial.print(" curr = ");Serial.println(_M2FB);
-  return analogRead(_M1FB);
+  return analogRead(_M1FB)*4;
 }
 
 // Return error status

@@ -4,8 +4,8 @@ void Mantieni_Targhet(float targhet) {
     Stop(1);
     return;
   }
-  if ( millis() - tempo_controlla_velocita < 75 ) {
-    Serial.println("troppo presto");
+  if ( millis() - tempo_controlla_velocita < 85 ) {
+    //Serial.println("troppo presto");
     return;
   }
   tempo_controlla_velocita = millis();
@@ -14,7 +14,7 @@ void Mantieni_Targhet(float targhet) {
   if (dif_targhet < 0) {
     dif_targhet = dif_targhet * -1;
   }
-  if ((micros() - tempo_mantieni_targhet) < 40000 && (dif_targhet < 4 )) {
+  if ((micros() - tempo_mantieni_targhet) < 50000 && (dif_targhet < 4 )) {
     //Serial.println("---- troppo presto ----");
     return;
   }
@@ -23,17 +23,17 @@ if (V_M > (targhet * 1.01)) {
       if (V_M > (targhet * 1.03)) {
         Serial.print("   ------   ");
         tensione = tensione - 10;
-        md.setM1Speed(tensione * motore * direzione * _Senso);
+        md.setM2Speed(tensione * motore * direzione * _Senso);
         return;
       }
       Serial.print("   ----   ");
       tensione = tensione - 8;
-      md.setM1Speed(tensione * motore * direzione * _Senso);
+      md.setM2Speed(tensione * motore * direzione * _Senso);
       return;
     }
     Serial.print("   --   ");
     tensione = tensione - 5;
-    md.setM1Speed(tensione * motore * direzione * _Senso);
+    md.setM2Speed(tensione * motore * direzione * _Senso);
     return;
   }
   if ( V_M < (targhet * 0.99)) {
@@ -44,7 +44,7 @@ if (V_M > (targhet * 1.01)) {
         if (tensione > 600) {
           tensione = 600;
         }
-        md.setM1Speed(tensione * motore * direzione * _Senso);
+        md.setM2Speed(tensione * motore * direzione * _Senso);
         return;
       }
       Serial.print("   ++++  ");
@@ -52,7 +52,7 @@ if (V_M > (targhet * 1.01)) {
       if (tensione > 600) {
         tensione = 600;
       }
-      md.setM1Speed(tensione * motore * direzione * _Senso);
+      md.setM2Speed(tensione * motore * direzione * _Senso);
       return;
     }
     Serial.print("   ++  ");
@@ -60,7 +60,7 @@ if (V_M > (targhet * 1.01)) {
     if (tensione > 600) {
       tensione = 600;
     }
-    md.setM1Speed(tensione * motore * direzione * _Senso);
+    md.setM2Speed(tensione * motore * direzione * _Senso);
     return;
   }
   pos_vecchio = pos;
@@ -109,7 +109,7 @@ int fai_Media() {
   if (conta_corrente > 19) {
     conta_corrente = 0;
   }
-  corrente[conta_corrente] = md.getM1CurrentMilliamps();
+  corrente[conta_corrente] = md.getM2CurrentMilliamps();
   int tot = 0;
   for (int i = 0; i < 20; i++) {
     tot = tot + corrente[i];
