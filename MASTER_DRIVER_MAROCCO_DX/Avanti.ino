@@ -24,7 +24,7 @@ void puntozero(){
     pos = 0;
     md.setM2Speed(0);                    // -- AZZERO LA TENSIONE
     digitalWrite(4, LOW);                // -- disabilito il DRIVER
-    digitalWrite(5, LOW);
+    digitalWrite(5, LOW);                //taglio i fili motore
     //digitalWrite(A3, HIGH);     // -- METTO IN CORTOCIRCUITO il motore
     digitalWrite(6, HIGH);     // -- BLOCCO CON MAGNETE
     tensione = 0;                       // -- azzero la tensione per il successivo  Stop(int Delay)
