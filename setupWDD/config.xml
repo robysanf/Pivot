@@ -15,5 +15,6 @@ mode="merge"
 target="/manifest/application"> 
    <application android:usesCleartextTraffic="true" /> 
 </edit-config>	
+<icon src="/res/logo.png"  />
 </widget>
 
